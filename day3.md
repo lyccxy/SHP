@@ -89,7 +89,6 @@ vue.config.js配置文件中配置代理跨域
         if(this.$route.query){
         location.query=this.$route.query
         }
-<<<<<<< HEAD
 
 2.开发Home首页当中的ListContainer组件与Floor组件
     https://docschina.org/
@@ -198,5 +197,3 @@ vue.config.js配置文件中配置代理跨域
             },
             },
         },
-=======
->>>>>>> c88172b30c69a1c93f8647f2fa0cbbe9a1924fa9

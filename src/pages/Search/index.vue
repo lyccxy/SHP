@@ -1,6 +1,5 @@
 <template>
   <div>
-<<<<<<< HEAD
     <TypeNav />
     <div class="main">
       <div class="py-container">
@@ -325,15 +324,10 @@
         </div>
       </div>
     </div>
-=======
-    <!-- Search模块 -->
-    <TypeNav />
->>>>>>> c88172b30c69a1c93f8647f2fa0cbbe9a1924fa9
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import { mapState,mapGetters } from 'vuex';
   import SearchSelector from './SearchSelector/SearchSelector'
   export default {
@@ -683,13 +677,4 @@ import { mapState,mapGetters } from 'vuex';
       }
     }
   }
-=======
-export default {
-  name:'Search'
-}
-</script>
-
-<style>
-
->>>>>>> c88172b30c69a1c93f8647f2fa0cbbe9a1924fa9
 </style>
