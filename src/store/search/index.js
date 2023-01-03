@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {reqGetSearchInfo} from '@/api'
 // search模块的小仓库
 const state={
@@ -35,6 +36,15 @@ const getters={
 
 export default{
     namespaced: true,
+=======
+// search模块的小仓库
+const state={number:11};
+const mutations={};
+const actions={};
+const getters={};
+
+export default{
+>>>>>>> c88172b30c69a1c93f8647f2fa0cbbe9a1924fa9
     state,
     mutations,
     actions,

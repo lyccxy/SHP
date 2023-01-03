@@ -6,7 +6,12 @@
     <TodayRecommend />
     <Rank/>
     <Like/>
+<<<<<<< HEAD
     <Floor v-for="floor of floorList" :key="floor.id" :floor="floor"/>
+=======
+    <Floor/>
+    <Floor/>
+>>>>>>> c88172b30c69a1c93f8647f2fa0cbbe9a1924fa9
     <Brand/>
   </div>
 </template>
@@ -19,12 +24,17 @@ import Rank from '@/pages/Home/Rank'
 import Like from '@/pages/Home/Like'
 import Brand from '@/pages/Home/Brand'
 import Floor from '@/pages/Home/Floor'
+<<<<<<< HEAD
 import { mapState } from "vuex";
 export default {
   name:'Home',
   computed: {
     ...mapState("home", ["floorList"]),
   },
+=======
+export default {
+  name:'Home',
+>>>>>>> c88172b30c69a1c93f8647f2fa0cbbe9a1924fa9
   components:{
     ListContainer,
     TodayRecommend,
@@ -32,10 +42,14 @@ export default {
     Brand,
     Like,
     Floor
+<<<<<<< HEAD
   },
    mounted() {
     this.$store.dispatch("home/getFloorList");
   },
+=======
+  }
+>>>>>>> c88172b30c69a1c93f8647f2fa0cbbe9a1924fa9
 }
 </script>
 

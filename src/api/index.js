@@ -53,6 +53,3 @@ export const reqGetSearchInfo=(params)=>{
         data:params? params:{}
     })
 }
-
-
-
