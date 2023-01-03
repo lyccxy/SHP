@@ -53,3 +53,39 @@
     vuex
 
 2.把首页中的轮播图拆分为一个共用全局组件
+
+3.开发Search模块
+    1.1 根据不同参数返回不同结果数据
+        mounted生命周期只在组件挂载完毕执行一次【仅仅执行一次】
+        创建响应式数据searchParams处理初始化传参数据
+        在beforeMount生命周期中先初始化数据
+        复杂写法
+        let query = this.$route.query;
+        this.searchParams.category1Id = query.category1Id;
+        this.searchParams.category2Id = query.category2Id;
+        this.searchParams.category3Id = query.category3Id;
+        this.searchParams.categoryName=query.categoryName
+        this.searchParams.keyword = this.$route.params.keyword;
+
+    1.2 Object.assign:ES6新增的语法，合并对象
+        Object.assign(需要被合并对象，合并对象1，合并对象2)
+        Object.assign(searchParams,query,params)
+
+    2 Search完成进度
+        2.1 Search模块需要的服务器数据，已经请求到并且存储于vuex仓库中，有一些数组数据【已经通过getters】进行简化
+           切记：仓库中的getters用于简化数据而生
+        2.2 商品列表、平台售卖属性已经动态数据（来自于服务器数据）
+
+    3. 监听路由的变化再次发起请求
+        3.1数据监听：监听组件实例身上的属性的属性值变化
+        watch:{
+            <!-- 监听路由信息是否发生变化，如果发生变化，再次发起请求 -->
+            $route(newValue,oldValue){
+                <!-- 整理路由传递参数与接口参数数据 -->
+            Object.assign(this.searchParams,this.$route.query,this.$route.params)
+            this.getData()
+            }
+        }
+
+        3.2 什么时候需要开启深度监听
+            当数据十分复杂时，例如：一个数组中有着许多对象，对象中又包含许多数据
