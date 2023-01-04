@@ -38,7 +38,7 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
-            v-model="keyWord"
+            v-model="keyword"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -54,11 +54,28 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: "Header",
+  // 第一种方法通过vuex计算属性进行搜索与search面包屑关联关键字
+  // computed:{
+  //   keyword:{
+  //     get(){
+  //       return this.$store.state.head.keyword;
+  //     },
+  //     set(value){
+  //       this.$store.dispatch("head/updateKeyword",value)
+  //     }
+  //   }
+  // },
+
+  //第二种方法通过$bus全局事件总线进行关联Search面包屑关键字 
+  mounted(){
+    this.$bus.$on('removeKeyword',this.removeKeyword)
+  },
   data() {
     return {
-      keyWord: "",
+      keyword: "",
     }
   },
   methods: {
@@ -94,7 +111,7 @@ export default {
           // 4.1
           let location={
             name:'search',
-            params: {keyword: this.keyWord||undefined}
+            params: {keyword: this.keyword||undefined}
           }
           
           if(this.$route.query){
@@ -102,6 +119,9 @@ export default {
           }
           this.$router.push(location)
 
+    },
+    removeKeyword(data){
+      this.keyword=data
     }
   },
 };

@@ -4,7 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+          <li v-for="trademark in trademarkList" :key="trademark.tmId" @click="showTrademark(trademark)">{{trademark.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -16,8 +16,8 @@
       <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue,index) in attr.attrValueList" :key="index">
-            <a>{{attrValue}}</a>
+          <li v-for="(attrValue,index) in attr.attrValueList" :key="index" >
+            <a @click="showAttr(attr,attrValue)">{{attrValue}}</a>
           </li>
         </ul>
       </div>
@@ -29,7 +29,19 @@
 <script>
   export default {
     name: 'SearchSelector',
-    props:['trademarkList','attrsList']
+    props:['trademarkList','attrsList'],
+    methods:{
+      showTrademark(data){
+        // 第一种方法使用$bus全局事件总线传递品牌信息
+        // this.$bus.$emit("showTrademark",data)
+        // 第二种方法使用自定义事件传递品牌信息
+        this.$emit("showTrademark",data)
+      },
+      showAttr(attr,attrValue){
+        attr.attrValue=attrValue
+        this.$emit("showAttr",attr)
+      }
+    }
   }
 </script>
 

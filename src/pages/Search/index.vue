@@ -11,17 +11,24 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类面包屑 -->
+            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName()">×</i></li>
+            <!-- 关键字面包屑 -->
+            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword()">×</i></li>
+            <!-- 品牌信息面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark()">×</i></li>
+            <!-- 平台售卖属性面包屑 -->
+            <li class="with-x" v-if="searchParams.props[0]">{{searchParams.props[0].split(":")[1]}}<i @click="removeProps()">×</i></li>
           </ul>
         </div>
 
         <!--selector-->
+        <!-- 使用自定义事件 获取子组件传递的品牌信息 -->
         <SearchSelector
           :trademarkList="trademarkList"
           :attrsList="attrsList"
+          @showTrademark="showTrademark"
+          @showAttr="showAttr"
         ></SearchSelector>
 
         <!--details-->
@@ -187,24 +194,73 @@ export default {
     // 在发请求之前带给服务器参数【searchParams参数发生变化有数值带给服务器】
     // 先测试接口返回的数据格式
     this.getData();
+    // 使用第一种方法 使用$bus全局事件总线 获取子组件searchSelector组件传递的品牌信息
+    // this.$bus.$on("showTrademark",this.showTrademark)
   },
   methods: {
     // 向服务器发请求获取search模块数据（根据参数不同返回不同的数据展示）
     // 把这次请求封装成一个函数：当你需要在调用的时候调用即可
     getData() {
-      console.log(this,this.searchParams)
       this.$store.dispatch("search/getSearchList", this.searchParams);
     },
+    // 删除分类名字
+    removeCategoryName(){
+      // 把带给服务器的参数置空，还需要向服务器发请求
+      this.searchParams.category1Id=undefined;
+      this.searchParams.category2Id=undefined;
+      this.searchParams.category3Id=undefined; 
+      this.searchParams.categoryName=undefined;
+      // this.getData();
+      let location={name:"search"}
+      if(this.$route.params){
+        location.params=this.$route.params
+      }
+      this.$router.push(location)
+    },
+    // 删除关键字
+    removeKeyword(){
+      this.searchParams.keyword=undefined;
+      let location={name:"search"}
+      if(this.$route.query){
+        location.query=this.$route.query
+      }
+      /* 使用vuex绑定Head关键字关联
+      this.$store.dispatch("head/removeKeyword") */
+      // 使用$bus事件全局总线绑定head关键字关联
+      this.$bus.$emit("removeKeyword","")
+      this.$router.push(location)
+    },
+    // 删除品牌信息
+    removeTrademark(){
+      this.searchParams.trademark=undefined;
+      this.getData()
+    },
+    //  显示品牌面包屑
+    showTrademark(data){
+      this.searchParams.trademark=data.tmId+":"+data.tmName
+      // 重新向服务器发请求
+      this.getData()
+    },
+    // 展示平台售卖属性面包屑
+    showAttr(data){
+      this.searchParams.props[0]=`${data.attrId}:${data.attrValue}:${data.attrName}`
+      this.getData()
+    },
+    // 删除平台售卖属性
+    removeProps(){
+      this.searchParams.props=[];
+      this.getData()
+    }
   },
   // 数据监听：监听组件实例身上的属性的属性值变化
   watch:{
     // 监听路由信息是否发生变化，如果发生变化，再次发起请求
     $route(newValue,oldValue){
       // 分类名字与关键字不用清理，因为每一次路由发生变化的时候，都会给她赋予新的数据
-      this.searchParams.category1Id="";
-      this.searchParams.category2Id="";
-      this.searchParams.category3Id=""; 
-       Object.assign(this.searchParams,this.$route.query,this.$route.params);
+      this.searchParams.category1Id=undefined;
+      this.searchParams.category2Id=undefined;
+      this.searchParams.category3Id=undefined; 
+      Object.assign(this.searchParams,this.$route.query,this.$route.params);
       this.getData();
       // 每一次请求完毕，应该把相应的1、2、3级分类的ID置空，让他接受下一次的相应1、2、3Id
 
